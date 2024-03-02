@@ -45,7 +45,7 @@ const registerNewUser = async (rawUserData) => {
     if (isPhoneExist === true) {
       return {
         EM: "The phone number is a already exist",
-        EC: 1,
+        EC: 2,
       };
     }
     // hash user password
