@@ -1,4 +1,9 @@
 import db from "../models/index";
+import {
+  hashUserPassword,
+  checkEmailExist,
+  checkPhoneExist,
+} from "./loginRegisterService";
 
 const getAllUsers = async () => {
   try {
@@ -35,8 +40,9 @@ const getUserWithPagination = async (page, limit) => {
     const { count, rows } = await db.User.findAndCountAll({
       offset: offset,
       limit: limit,
-      attributes: ["id", "username", "email", "phone", "sex"],
-      include: { model: db.Group, attributes: ["name", "description"] },
+      attributes: ["id", "username", "email", "phone", "sex", "address"],
+      include: { model: db.Group, attributes: ["name", "description", "id"] },
+      order: [["id", "DESC"]],
     });
 
     let totalPages = Math.ceil(count / limit);
@@ -63,7 +69,28 @@ const getUserWithPagination = async (page, limit) => {
 
 const createNewUser = async (data) => {
   try {
-    await db.User.create(data);
+    // check email/phone number
+    let isEmailExist = await checkEmailExist(data.email);
+    if (isEmailExist === true) {
+      return {
+        EM: "The email is a already exist",
+        EC: 1,
+        DT: "email",
+      };
+    }
+    let isPhoneExist = await checkPhoneExist(data.phone);
+    if (isPhoneExist === true) {
+      return {
+        EM: "The phone number is a already exist",
+        EC: 1,
+        DT: "phone",
+      };
+    }
+    // hash user password
+    let hashPassword = hashUserPassword(data.password);
+
+    // create new user
+    await db.User.create({ ...data, password: hashPassword });
     return {
       EM: "CREATE Ok!",
       EC: 0,
