@@ -4,6 +4,7 @@ const handleHelloWorld = (req, res) => {
 };
 
 const handleUserPage = async (req, res) => {
+
   let userList = await userService.getUserList();
   return res.render("user.ejs", { userList });
 };
@@ -28,7 +29,7 @@ const getUpdateUserPage = async (req, res) => {
   let user = await userService.getUserById(id);
   let userData = {};
   userData = user;
-  
+
   return res.render("user-update.ejs", { userData });
 };
 
