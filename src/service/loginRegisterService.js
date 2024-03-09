@@ -95,7 +95,6 @@ const handleUserLogin = async (rawData) => {
       );
 
       if (isCorrectPassword === true) {
-        
         let groupWithRoles = await getGroupWithRoles(user);
         let payload = {
           email: user.email,
@@ -109,6 +108,8 @@ const handleUserLogin = async (rawData) => {
           DT: {
             access_token: token,
             groupWithRoles,
+            email: user.email,
+            username: user.username,
           },
         };
       }
