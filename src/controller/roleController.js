@@ -94,7 +94,7 @@ const deleteFunc = async (req, res) => {
   }
 };
 
-const getRoleByGroup = async (req, res)=>{
+const getRoleByGroup = async (req, res) => {
   try {
     let id = req.params.groupId;
     let data = await roleApiService.getRoleByGroup(id);
@@ -111,7 +111,26 @@ const getRoleByGroup = async (req, res)=>{
       DT: "", //data
     });
   }
-}
+};
+
+const assignRoleToGroup = async (req, res) => {
+  try {
+    let id = req.params.groupId;
+    let data = await roleApiService.assignRoleToGroup(req.body.data);
+    return res.status(200).json({
+      EM: data.EM, // error message
+      EC: data.EC, // error code
+      DT: data.DT, //data
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      EM: "error from server", // error message
+      EC: "-1", // error code
+      DT: "", //data
+    });
+  }
+};
 
 module.exports = {
   readFunc,
@@ -119,4 +138,5 @@ module.exports = {
   updateFunc,
   deleteFunc,
   getRoleByGroup,
+  assignRoleToGroup,
 };
