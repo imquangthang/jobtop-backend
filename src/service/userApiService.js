@@ -98,6 +98,7 @@ const createNewUser = async (data) => {
     };
   } catch (error) {
     console.log(error);
+    return { EM: "something wrong with service", EC: 1, DT: [] };
   }
 };
 
@@ -137,7 +138,7 @@ const updateUsers = async (data) => {
     }
   } catch (error) {
     console.log(error);
-    return { EM: "somthing wrong with service", EC: 1, DT: [] };
+    return { EM: "something wrong with service", EC: 1, DT: [] };
   }
 };
 
