@@ -3,6 +3,7 @@ import apiController from "../controller/apiController";
 import userController from "../controller/userController";
 import groupController from "../controller/groupController";
 import roleController from "../controller/roleController";
+import jobController from "../controller/jobController";
 import { checkUserJWT, checkUserPermission } from "../middleware/JWTAction";
 
 const router = express.Router();
@@ -49,6 +50,9 @@ const initApiRoutes = (app) => {
 
   // group routes
   router.get("/group/read", groupController.readFunc);
+
+  //job routers
+  router.get("/job/read", jobController.readFunc);
 
   return app.use("/api/v1/", router);
 };

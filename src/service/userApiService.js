@@ -27,7 +27,7 @@ const getAllUsers = async () => {
   } catch (error) {
     console.log(error);
     return {
-      EM: "somthing wrong with service",
+      EM: "something wrong with service",
       EC: 1,
       DT: [],
     };
@@ -60,7 +60,7 @@ const getUserWithPagination = async (page, limit) => {
   } catch (error) {
     console.log(error);
     return {
-      EM: "somthing wrong with service",
+      EM: "something wrong with service",
       EC: 1,
       DT: [],
     };

@@ -17,6 +17,7 @@ const initWedRoutes = (app) => {
   router.get("/update-user/:id", homeControllor.getUpdateUserPage);
   router.post("/user/update-user", homeControllor.handleUpdateUser);
 
+
   // rest API
   // GET - R, POST - C, PUT - U, DELETE - D
   router.get("/api/test-api", apiController.testApi);
