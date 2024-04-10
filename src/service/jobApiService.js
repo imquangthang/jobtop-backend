@@ -45,9 +45,17 @@ const getJobWithPagination = async (page, limit) => {
       attributes: [
         "id",
         "title",
+        "companyId",
+        "careerId",
         "address",
-        "description",
+        "numberEmployee",
+        "experience",
+        "level",
         "salary",
+        "education",
+        "description",
+        "requirements",
+        "deadline",
         "sourcePicture",
       ],
       //   include: { model: db.career, attributes: ["name", "description", "id"] },
@@ -76,7 +84,104 @@ const getJobWithPagination = async (page, limit) => {
   }
 };
 
+const createNewJob = async (data) => {
+  try {
+    // create new job
+    await db.JobInfo.create(data);
+    return {
+      EM: "CREATE Ok!",
+      EC: 0,
+      DT: [],
+    };
+  } catch (error) {
+    console.log(error);
+    return { EM: "something wrong with service", EC: 1, DT: [] };
+  }
+};
+
+const updateJob = async (data) => {
+  try {
+    if (!data.id) {
+      return {
+        EM: "Error with empty Job",
+        EC: 1,
+        DT: "",
+      };
+    }
+    let job = await db.JobInfo.findOne({
+      where: { id: data.id },
+    });
+
+    if (job) {
+      // update
+      await job.update({
+        title: data.title,
+        companyId: data.companyId,
+        careerId: data.careerId,
+        address: data.address,
+        numberEmployee: data.numberEmployee,
+        experience: data.experience,
+        level: data.level,
+        salary: data.salary,
+        education: data.education,
+        description: data.description,
+        requirements: data.requirements,
+        deadline: data.deadline,
+        sourcePicture: data.sourcePicture,
+      });
+      return {
+        EM: "Update Job Success",
+        EC: 0,
+        DT: "",
+      };
+    } else {
+      // not found user
+      return {
+        EM: "Job not found",
+        EC: 2,
+        DT: "",
+      };
+    }
+  } catch (error) {
+    console.log(error);
+    return { EM: "something wrong with service", EC: 1, DT: [] };
+  }
+};
+
+const deleteJob = async (id) => {
+  try {
+    let job = await db.JobInfo.findOne({
+      where: { id: id },
+    });
+    if (job) {
+      await job.destroy();
+
+      return {
+        EM: "DELETE job success",
+        EC: 0,
+        DT: [],
+      };
+    } else {
+      return {
+        EM: "job not exist",
+        EC: 2,
+        DT: [],
+      };
+    }
+  } catch (error) {
+    console.log(error);
+    return {
+      EM: "error from service",
+      EC: 1,
+      DT: [],
+    };
+  }
+};
+
 module.exports = {
   getJobWithPagination,
   getAllJobs,
+  createNewJob,
+  updateJob,
+  deleteJob,
 };

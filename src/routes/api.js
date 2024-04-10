@@ -26,7 +26,7 @@ const initApiRoutes = (app) => {
   // rest API
   // GET - R, POST - C, PUT - U, DELETE - D
 
-  router.all("*", checkUserJWT, checkUserPermission);
+  router.all(/^\/(?!job).*/, checkUserJWT, checkUserPermission);
 
   router.post("/register", apiController.handleRegister);
   router.post("/login", apiController.handleLogin);
@@ -53,6 +53,9 @@ const initApiRoutes = (app) => {
 
   //job routers
   router.get("/job/read", jobController.readFunc);
+  router.post("/job/create", jobController.createFunc);
+  router.put("/job/update", jobController.updateFunc);
+  router.delete("/job/delete", jobController.deleteFunc);
 
   return app.use("/api/v1/", router);
 };
