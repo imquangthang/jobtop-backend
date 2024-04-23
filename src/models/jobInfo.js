@@ -9,6 +9,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      JobInfo.belongsTo(models.Company, { foreignKey: "companyId" });
     }
   }
   JobInfo.init(
@@ -20,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
       numberEmployee: DataTypes.INTEGER,
       experience: DataTypes.STRING,
       level: DataTypes.STRING,
-      salary: DataTypes.INTEGER,
+      salary: DataTypes.STRING,
       education: DataTypes.STRING,
       description: DataTypes.TEXT,
       requirements: DataTypes.TEXT,

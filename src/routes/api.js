@@ -56,6 +56,11 @@ const initApiRoutes = (app) => {
   router.post("/job/create", jobController.createFunc);
   router.put("/job/update", jobController.updateFunc);
   router.delete("/job/delete", jobController.deleteFunc);
+  router.get("/job/read/getAddress", jobController.getAddress);
+  router.get("/job/read/getCareer", jobController.getCareer);
+  router.get("/job/read/company-job", jobController.readCompanyJobFunc);
+  router.get("/job/read/job-info", jobController.readJobInfo);
+  router.post("/job/create/create-new-career", jobController.createNewCareer);
 
   return app.use("/api/v1/", router);
 };

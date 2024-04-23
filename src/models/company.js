@@ -13,6 +13,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   Company.init(
     {
+      idAccount: DataTypes.INTEGER,
       name: DataTypes.STRING,
       wedSite: DataTypes.STRING,
       address: DataTypes.TEXT,
