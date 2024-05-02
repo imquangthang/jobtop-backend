@@ -19,7 +19,7 @@ configViewEngine(app);
 
 // config body-parser
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: false }));
 
 // config cookie-parser
 app.use(cookieParser());

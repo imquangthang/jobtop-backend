@@ -4,9 +4,14 @@ import userController from "../controller/userController";
 import groupController from "../controller/groupController";
 import roleController from "../controller/roleController";
 import jobController from "../controller/jobController";
+import companyController from "../controller/companyController";
 import { checkUserJWT, checkUserPermission } from "../middleware/JWTAction";
+import multer from "multer";
 
 const router = express.Router();
+
+// Khởi tạo Multer với các tùy chọn cấu hình
+const upload = multer({ dest: "uploads/" }); // Thư mục để lưu trữ các tệp tải lên
 
 /**
  *
@@ -51,7 +56,7 @@ const initApiRoutes = (app) => {
   // group routes
   router.get("/group/read", groupController.readFunc);
 
-  //job routers
+  // job routers
   router.get("/job/read", jobController.readFunc);
   router.post("/job/create", jobController.createFunc);
   router.put("/job/update", jobController.updateFunc);
@@ -61,6 +66,17 @@ const initApiRoutes = (app) => {
   router.get("/job/read/company-job", jobController.readCompanyJobFunc);
   router.get("/job/read/job-info", jobController.readJobInfo);
   router.post("/job/create/create-new-career", jobController.createNewCareer);
+  router.post(
+    "/job/apply-job",
+    upload.single("fileCV"),
+    jobController.applyJob
+  );
+
+  // Company Routers
+  router.get(
+    "/company/read/job-info-status",
+    companyController.getUserApplyJob
+  );
 
   return app.use("/api/v1/", router);
 };

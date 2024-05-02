@@ -1,5 +1,6 @@
 import e from "express";
 import jobApiService from "../service/jobApiService";
+import multer from "multer";
 
 const readFunc = async (req, res) => {
   try {
@@ -221,6 +222,28 @@ const createNewCareer = async (req, res) => {
   }
 };
 
+const applyJob = async (req, res) => {
+  try {
+    if (req.file) {
+      let data = await jobApiService.applyJob(req.body, req.file);
+
+      return res.status(200).json({
+        EM: data.EM, // error message
+        EC: data.EC, // error code
+        DT: data.DT, //data
+      });
+    } else {
+      console.log("Not Found File");
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      EM: "error from server", // error message
+      EC: "-1", // error code
+      DT: "", //data
+    });
+  }
+};
 
 module.exports = {
   readFunc,
@@ -232,4 +255,5 @@ module.exports = {
   readJobInfo,
   getCareer,
   createNewCareer,
+  applyJob,
 };

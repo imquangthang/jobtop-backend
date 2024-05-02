@@ -1,6 +1,8 @@
 import { groupBy } from "lodash";
 import db, { Sequelize, sequelize } from "../models/index";
+import { file } from "googleapis/build/src/apis/file";
 const { Op, literal, where } = require("sequelize");
+import { uploadFile } from "./fileApi";
 
 const getAllJobs = async () => {
   try {
@@ -373,6 +375,7 @@ const getJobInfo = async (idJob) => {
         "deadline",
         "sourcePicture",
       ],
+      include: { model: db.Company, attributes: ["name", "id"] },
       where: { id: idJob },
     });
     if (job) {
@@ -383,7 +386,7 @@ const getJobInfo = async (idJob) => {
       };
     } else {
       return {
-        EM: "get data success",
+        EM: "get data unsuccess",
         EC: 0,
         DT: [],
       };
@@ -433,6 +436,61 @@ const createNewCareer = async (data) => {
   }
 };
 
+const checkApplyExits = async (user_Id, job_Id) => {
+  let data = await db.Recruitment.findOne({
+    where: { jobId: job_Id, userId: user_Id },
+  });
+  if (data != null) {
+    return true;
+  }
+
+  return false;
+};
+
+const applyJob = async (data, file) => {
+  try {
+    console.log(data);
+    console.log(file);
+    // apply job
+    let user = await db.User.findOne({
+      attributes: ["id"],
+      where: { email: data.accountEmail },
+    });
+    let applyExit = await checkApplyExits(user.id, data.jobId);
+    if (!applyExit) {
+      let fileId = await uploadFile(
+        { shared: true },
+        file.originalname,
+        file.mimetype,
+        file.path
+      );
+      let URL_CV = "https://drive.google.com/file/d/" + fileId + "/preview";
+      let dataApply = {
+        userId: user.id,
+        jobId: data.jobId,
+        status: 0,
+        coverletter: data.coverletter,
+        CV: URL_CV,
+      };
+      let dataNew = await db.Recruitment.create(dataApply);
+      return {
+        EM: "Apply this job Success",
+        EC: 0,
+        DT: dataNew,
+      };
+    } else {
+      return {
+        EM: "You have applied for this job",
+        EC: 1,
+        DT: [],
+      };
+    }
+  } catch (error) {
+    console.log(error);
+    return { EM: "something wrong with service", EC: 1, DT: [] };
+  }
+};
+
 module.exports = {
   getJobWithPagination,
   getCompanyJobWithPagination,
@@ -444,4 +502,5 @@ module.exports = {
   getJobInfo,
   getListCareer,
   createNewCareer,
+  applyJob,
 };

@@ -54,13 +54,22 @@ const registerNewUser = async (rawUserData) => {
     }
     // hash user password
     let hashPassword = hashUserPassword(rawUserData.password);
+    // get id group Guest
+    let group = await db.Group.findOne({
+      attributes: ["id"],
+      where: { name: "Guest" },
+    });
+
+    console.log("group registerL:");
+    console.log(group);
+
     // create new user
     await db.User.create({
       email: rawUserData.email,
       username: rawUserData.username,
       password: hashPassword,
       phone: rawUserData.phone,
-      groupId: 4,
+      groupId: group.id,
     });
 
     return {
