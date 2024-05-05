@@ -7,6 +7,7 @@ import jobController from "../controller/jobController";
 import companyController from "../controller/companyController";
 import { checkUserJWT, checkUserPermission } from "../middleware/JWTAction";
 import multer from "multer";
+import { sendEmailController } from "../controller/emailController.js";
 
 const router = express.Router();
 
@@ -77,6 +78,17 @@ const initApiRoutes = (app) => {
     "/company/read/job-info-status",
     companyController.getUserApplyJob
   );
+  router.put(
+    "/company/update/reject-recruitment",
+    companyController.rejectRecruitment
+  );
+  router.put(
+    "/company/update/accept-recruitment",
+    companyController.acceptRecruitment
+  );
+
+  //email router
+  router.post("/sendEmail", sendEmailController);
 
   return app.use("/api/v1/", router);
 };

@@ -1,6 +1,4 @@
-import e from "express";
 import jobApiService from "../service/jobApiService";
-import multer from "multer";
 
 const readFunc = async (req, res) => {
   try {
