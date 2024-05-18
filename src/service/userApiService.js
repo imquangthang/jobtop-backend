@@ -1,3 +1,4 @@
+import { where } from "sequelize";
 import db from "../models/index";
 import {
   hashUserPassword,
@@ -172,10 +173,131 @@ const deleteUser = async (id) => {
   }
 };
 
+const getUserByEmail = async (email) => {
+  try {
+    let user = await db.User.findOne({
+      attributes: [
+        "firstName",
+        "lastName",
+        "email",
+        "username",
+        "address",
+        "sex",
+        "phone",
+        "aboutMe",
+        "skills",
+        "education",
+        "experience",
+        "avatar",
+      ],
+      where: { email: email },
+    });
+    if (user) {
+      return {
+        EM: "get data user success",
+        EC: 0,
+        DT: user,
+      };
+    } else {
+      return {
+        EM: "get data user success",
+        EC: 0,
+        DT: [],
+      };
+    }
+  } catch (error) {
+    console.log(error);
+    return {
+      EM: "something wrong with service",
+      EC: 1,
+      DT: [],
+    };
+  }
+};
+
+const updateUser = async (data) => {
+  try {
+    let user = await db.User.findOne({
+      where: { email: data.email },
+    });
+
+    if (user) {
+      // update
+      await user.update({
+        firstName: data.firstName,
+        lastName: data.lastName,
+        username: data.username,
+        address: data.address,
+        sex: data.sex,
+        aboutMe: data.aboutMe,
+        skills: data.skills,
+        education: data.education,
+        experience: data.education,
+        avatar: data.avatar,
+      });
+      return {
+        EM: "Update User Success",
+        EC: 0,
+        DT: "",
+      };
+    } else {
+      // not found user
+      return {
+        EM: "User not found",
+        EC: 2,
+        DT: "",
+      };
+    }
+  } catch (error) {
+    console.log(error);
+    return { EM: "something wrong with service", EC: 1, DT: [] };
+  }
+};
+
+const getJobRecruitment = async (email) => {
+  try {
+    let user = await db.User.findOne({
+      attributes: ["id"],
+      where: { email: email },
+    });
+
+    if (user) {
+      let data = await db.Recruitment.findAll({
+        attributes: ["jobId"],
+        include: { model: db.JobInfo, attributes: ["title"] },
+        where: { userId: user.id },
+      });
+      if (data) {
+        return {
+          EM: "get data success",
+          EC: 0,
+          DT: data,
+        };
+      } else {
+        return {
+          EM: "get data unsuccess",
+          EC: 0,
+          DT: [],
+        };
+      }
+    }
+  } catch (error) {
+    console.log(error);
+    return {
+      EM: "something wrong with service",
+      EC: 1,
+      DT: [],
+    };
+  }
+};
+
 module.exports = {
   getAllUsers,
   createNewUser,
   updateUsers,
   deleteUser,
   getUserWithPagination,
+  getUserByEmail,
+  updateUser,
+  getJobRecruitment,
 };

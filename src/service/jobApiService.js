@@ -449,8 +449,6 @@ const checkApplyExits = async (user_Id, job_Id) => {
 
 const applyJob = async (data, file) => {
   try {
-    console.log(data);
-    console.log(file);
     // apply job
     let user = await db.User.findOne({
       attributes: ["id"],

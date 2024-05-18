@@ -38,13 +38,16 @@ const initApiRoutes = (app) => {
   router.post("/login", apiController.handleLogin);
   router.post("/logout", apiController.handleLogout);
 
-  router.get("/account", userController.getUserAccount);
-
+  
   // user routes
+  router.get("/account", userController.getUserAccount);
   router.get("/user/read", userController.readFunc);
+  router.get("/user/read-info-user", userController.getUserByEmail);
   router.post("/user/create", userController.createFunc);
   router.put("/user/update", userController.updateFunc);
   router.delete("/user/delete", userController.deleteFunc);
+  router.put("/user/update-info-user", userController.updateUser);
+  router.get("/user/read/job-recruitment", userController.getJobRecruitment);
 
   // roles routes
   router.get("/role/read", roleController.readFunc);
