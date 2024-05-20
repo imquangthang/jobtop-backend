@@ -24,11 +24,21 @@ const createNewRoles = async (roles) => {
   }
 };
 
-const getAllRoles = async () => {
+const getAllRoles = async (page, limit) => {
   try {
-    let data = await db.Role.findAll({
+    let offset = (page - 1) * limit;
+
+    const { count, rows } = await db.Role.findAndCountAll({
+      offset: offset,
+      limit: limit,
       order: [["id", "DESC"]],
     });
+    let totalPages = Math.ceil(count / limit);
+    let data = {
+      totalRows: count,
+      totalPages: totalPages,
+      roles: rows,
+    };
     return {
       EM: "Get all Roles succeeds...",
       EC: 0,

@@ -23,6 +23,18 @@ const checkEmailExist = async (userEmail) => {
   return false;
 };
 
+const checkCompanyNameExist = async (companyName) => {
+  let user = await db.Company.findOne({
+    where: { name: companyName },
+  });
+
+  if (user) {
+    return true;
+  }
+
+  return false;
+};
+
 const checkPhoneExist = async (userPhone) => {
   let user = await db.User.findOne({
     where: { phone: userPhone },
@@ -65,6 +77,8 @@ const registerNewUser = async (rawUserData) => {
 
     // create new user
     await db.User.create({
+      firstName: rawUserData.firstName,
+      lastName: rawUserData.lastName,
       email: rawUserData.email,
       username: rawUserData.username,
       password: hashPassword,
@@ -74,6 +88,69 @@ const registerNewUser = async (rawUserData) => {
 
     return {
       EM: "A user is a created successfully!",
+      EC: 0,
+    };
+  } catch (error) {
+    console.log(">> check error: ", error);
+    return {
+      EM: "Something wrongs in service....",
+      EC: -2,
+    };
+  }
+};
+
+const registerNewCompany = async (rawUserData) => {
+  try {
+    // check email/phonenumber are exist
+    let isEmailExist = await checkEmailExist(rawUserData.email);
+    if (isEmailExist === true) {
+      return {
+        EM: "The email is a already exist",
+        EC: 1,
+      };
+    }
+    let isPhoneExist = await checkPhoneExist(rawUserData.phone);
+    if (isPhoneExist === true) {
+      return {
+        EM: "The phone number is a already exist",
+        EC: 2,
+      };
+    }
+
+    let isCompanyNameExist = await checkCompanyNameExist(rawUserData.companyName);
+    if (isCompanyNameExist === true) {
+      return {
+        EM: "The company name is a already exist",
+        EC: 2,
+      };
+    }
+    // hash user password
+    let hashPassword = hashUserPassword(rawUserData.password);
+    // get id group Guest
+    let group = await db.Group.findOne({
+      attributes: ["id"],
+      where: { name: "Customer" },
+    });
+
+    console.log("group registerL:");
+    console.log(group);
+
+    // create new company
+    let data = await db.User.create({
+      email: rawUserData.email,
+      username: rawUserData.companyName,
+      password: hashPassword,
+      phone: rawUserData.phone,
+      groupId: group.id,
+    });
+
+    await db.Company.create({
+      idAccount: data.id,
+      name: rawUserData.companyName,
+    });
+
+    return {
+      EM: "A company is a created successfully!",
       EC: 0,
     };
   } catch (error) {
@@ -146,4 +223,6 @@ module.exports = {
   hashUserPassword,
   checkEmailExist,
   checkPhoneExist,
+  registerNewCompany,
+  checkCompanyNameExist,
 };

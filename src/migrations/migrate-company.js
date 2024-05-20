@@ -14,23 +14,14 @@ module.exports = {
       name: {
         type: Sequelize.STRING,
       },
-      wedSite: {
-        type: Sequelize.STRING,
-      },
       address: {
         type: Sequelize.TEXT,
       },
       description: {
         type: Sequelize.TEXT,
       },
-      eyesight: {
-        type: Sequelize.TEXT,
-      },
-      mission: {
-        type: Sequelize.TEXT,
-      },
-      coreValue: {
-        type: Sequelize.TEXT,
+      headcount: {
+        type: Sequelize.STRING,
       },
       createdAt: {
         allowNull: false,

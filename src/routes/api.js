@@ -35,6 +35,7 @@ const initApiRoutes = (app) => {
   router.all(/^\/(?!job).*/, checkUserJWT, checkUserPermission);
 
   router.post("/register", apiController.handleRegister);
+  router.post("/register-company", apiController.handleRegisterCompany);
   router.post("/login", apiController.handleLogin);
   router.post("/logout", apiController.handleLogout);
 
@@ -77,10 +78,12 @@ const initApiRoutes = (app) => {
   );
 
   // Company Routers
+  router.get("/company/read", companyController.readFunc);
   router.get(
     "/company/read/job-info-status",
     companyController.getUserApplyJob
   );
+  router.put("/company/update", companyController.updateFunc);
   router.put(
     "/company/update/reject-recruitment",
     companyController.rejectRecruitment
@@ -89,6 +92,10 @@ const initApiRoutes = (app) => {
     "/company/update/accept-recruitment",
     companyController.acceptRecruitment
   );
+  router.delete("/company/delete", companyController.deleteFunc);
+
+  router.get("/company/read/company-info", companyController.readCompanyInfo);
+  router.get("/company/read/company-profile", companyController.readCompanyProfile);
 
   //email router
   router.post("/sendEmail", sendEmailController);

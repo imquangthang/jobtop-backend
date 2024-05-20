@@ -9,7 +9,9 @@ export const sendEmailService = async (
   job,
   dayInterview,
   timeInterview,
-  address
+  address,
+  interviewer,
+  phone
 ) => {
   let transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
@@ -34,6 +36,8 @@ export const sendEmailService = async (
     <p><b>Ngày Phỏng Vấn:</b> ${dayInterview}</p>
     <p><b>Thời gian:</b> ${timeInterview}</p>
     <p><b>Địa Chỉ:</b> ${address}</p>
+    <p><b>Người Phỏng Vấn:</b> ${interviewer}</p>
+    <p><b>SĐT Liên Hệ:</b> ${phone}</p>
     <p>Cảm ơn bạn đã tin dùng JobTop.</p>`,
     });
   } else if (action === "Reject") {

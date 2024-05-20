@@ -9,18 +9,16 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Company.belongsTo(models.User, { foreignKey: "idAccount" });
     }
   }
   Company.init(
     {
       idAccount: DataTypes.INTEGER,
       name: DataTypes.STRING,
-      wedSite: DataTypes.STRING,
       address: DataTypes.TEXT,
       description: DataTypes.TEXT,
-      eyesight: DataTypes.TEXT,
-      mission: DataTypes.TEXT,
-      coreValue: DataTypes.TEXT,
+      headcount: DataTypes.STRING,
     },
     {
       sequelize,

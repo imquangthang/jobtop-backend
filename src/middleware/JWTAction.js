@@ -2,7 +2,7 @@ require("dotenv").config();
 import jwt from "jsonwebtoken";
 // import { DESCRIBE } from "sequelize/types/query-types";
 
-const nonSecurePaths = ["/logout", "/login", "/register"];
+const nonSecurePaths = ["/logout", "/login", "/register","/register-company"];
 
 const createJWT = (payload) => {
   let key = process.env.JWT_SECRET;
