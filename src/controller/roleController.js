@@ -6,13 +6,31 @@ const readFunc = async (req, res) => {
     if (req.query.page && req.query.limit) {
       let page = req.query.page;
       let limit = req.query.limit;
-      let data = await roleApiService.getAllRoles(+page, +limit);
+      let data = await roleApiService.getAllRolesWithPaging(+page, +limit);
       return res.status(200).json({
         EM: data.EM, // error message
         EC: data.EC, // error code
         DT: data.DT, //data
       });
     }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      EM: "error from server", // error message
+      EC: "-1", // error code
+      DT: "", //data
+    });
+  }
+};
+
+const readAllRoles = async (req, res) => {
+  try {
+    let data = await roleApiService.getAllRoles();
+    return res.status(200).json({
+      EM: data.EM, // error message
+      EC: data.EC, // error code
+      DT: data.DT, //data
+    });
   } catch (error) {
     console.log(error);
     return res.status(500).json({
@@ -122,4 +140,5 @@ module.exports = {
   deleteFunc,
   getRoleByGroup,
   assignRoleToGroup,
+  readAllRoles,
 };

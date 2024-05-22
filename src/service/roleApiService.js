@@ -24,7 +24,7 @@ const createNewRoles = async (roles) => {
   }
 };
 
-const getAllRoles = async (page, limit) => {
+const getAllRolesWithPaging = async (page, limit) => {
   try {
     let offset = (page - 1) * limit;
 
@@ -39,6 +39,22 @@ const getAllRoles = async (page, limit) => {
       totalPages: totalPages,
       roles: rows,
     };
+    return {
+      EM: "Get all Roles succeeds...",
+      EC: 0,
+      DT: data,
+    };
+  } catch (error) {
+    console.log(error);
+    return { EM: "something wrong with service", EC: 1, DT: [] };
+  }
+};
+
+const getAllRoles = async () => {
+  try {
+    let data = await db.Role.findAll({
+      order: [["id", "DESC"]],
+    });
     return {
       EM: "Get all Roles succeeds...",
       EC: 0,
@@ -119,6 +135,7 @@ const assignRoleToGroup = async (data) => {
 module.exports = {
   createNewRoles,
   getAllRoles,
+  getAllRolesWithPaging,
   deleteRole,
   getRoleByGroup,
   assignRoleToGroup,
