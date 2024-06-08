@@ -27,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
       education: DataTypes.STRING,
       experience: DataTypes.STRING,
       groupId: DataTypes.INTEGER,
-      avatar: DataTypes.INTEGER,
+      avatar: DataTypes.STRING,
     },
     {
       sequelize,
