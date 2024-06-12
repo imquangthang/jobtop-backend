@@ -38,6 +38,7 @@ const initApiRoutes = (app) => {
   router.post("/register-company", apiController.handleRegisterCompany);
   router.post("/login", apiController.handleLogin);
   router.post("/logout", apiController.handleLogout);
+  router.put("/change-pass", apiController.handleChangePass);
 
   // user routes
   router.get("/account", userController.getUserAccount);
@@ -102,6 +103,7 @@ const initApiRoutes = (app) => {
 
   //email router
   router.post("/sendEmail", sendEmailController);
+
 
   return app.use("/api/v1/", router);
 };

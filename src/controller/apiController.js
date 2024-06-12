@@ -1,3 +1,4 @@
+import changePassService from "../service/changePassService";
 import loginRegisterService from "../service/loginRegisterService";
 
 const testApi = (req, res) => {
@@ -121,10 +122,30 @@ const handleLogout = (req, res) => {
   }
 };
 
+const handleChangePass = async (req, res) => {
+  try {
+    console.log(req.body);
+    let data = await changePassService.changePass(req.body);
+    return res.status(200).json({
+      EM: data.EM, // error message
+      EC: data.EC, // error code
+      DT: data.DT, //data
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      EM: "error from server", // error message
+      EC: "-1", // error code
+      DT: "", //data
+    });
+  }
+};
+
 module.exports = {
   testApi,
   handleRegister,
   handleLogin,
   handleLogout,
   handleRegisterCompany,
+  handleChangePass,
 };

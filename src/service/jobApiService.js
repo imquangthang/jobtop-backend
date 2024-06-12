@@ -14,10 +14,8 @@ const getAllJobs = async () => {
         "careerId",
         "address",
         "numberEmployee",
-        "experience",
         "level",
         "salary",
-        "education",
         "description",
         "requirements",
         "deadline",
@@ -68,7 +66,7 @@ const getJobWithPagination = async (page, limit, jobQuery) => {
     if (jobQuery.address)
       whereCondition.address = { [Op.like]: `%${jobQuery.address}%` };
     if (jobQuery.experience)
-      whereCondition.experience = { [Op.like]: `%${jobQuery.experience}%` };
+      whereCondition.level = { [Op.like]: `%${jobQuery.experience}%` };
     const { count, rows } = await db.JobInfo.findAndCountAll({
       offset: offset,
       limit: limit,
@@ -79,12 +77,12 @@ const getJobWithPagination = async (page, limit, jobQuery) => {
         "careerId",
         "address",
         "numberEmployee",
-        "experience",
         "level",
         "salary",
-        "education",
         "description",
         "requirements",
+        "rights",
+        "dateSub",
         "deadline",
         "sourcePicture",
       ],
@@ -147,7 +145,7 @@ const getCompanyJobWithPagination = async (page, limit, emailAcc, jobQuery) => {
     if (jobQuery.address)
       whereCondition.address = { [Op.like]: `%${jobQuery.address}%` };
     if (jobQuery.experience)
-      whereCondition.experience = { [Op.like]: `%${jobQuery.experience}%` };
+      whereCondition.level = { [Op.like]: `%${jobQuery.experience}%` };
     const { count, rows } = await db.JobInfo.findAndCountAll({
       offset: offset,
       limit: limit,
@@ -158,12 +156,12 @@ const getCompanyJobWithPagination = async (page, limit, emailAcc, jobQuery) => {
         "careerId",
         "address",
         "numberEmployee",
-        "experience",
         "level",
         "salary",
-        "education",
         "description",
         "requirements",
+        "rights",
+        "dateSub",
         "deadline",
         "sourcePicture",
       ],
@@ -230,12 +228,11 @@ const updateJob = async (data) => {
         careerId: data.careerId,
         address: data.address,
         numberEmployee: data.numberEmployee,
-        experience: data.experience,
         level: data.level,
         salary: data.salary,
-        education: data.education,
         description: data.description,
         requirements: data.requirements,
+        rights: data.rights,
         deadline: data.deadline,
         sourcePicture: data.sourcePicture,
       });
@@ -366,12 +363,12 @@ const getJobInfo = async (idJob) => {
         "careerId",
         "address",
         "numberEmployee",
-        "experience",
         "level",
         "salary",
-        "education",
         "description",
         "requirements",
+        "rights",
+        "dateSub",
         "deadline",
         "sourcePicture",
       ],
